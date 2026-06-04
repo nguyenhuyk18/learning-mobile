@@ -1,104 +1,77 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
+import { DataTable } from 'react-native-paper';
+
 // import { Button } from 'react-native/types_generated/index';
 
 export default function App() {
-  const [count, setCount] = useState<number>(0);
-  const [name, setName] = useState<string>('');
-  const [age, setAge] = useState<number>(0);
 
-  const handleClick = () => {
-    setCount((prev) => {
-      return prev + 1
-    })
-  }
-
+  const [students, setStudents] = useState([
+    { id: 1, name: 'nguyen duc huy1', age: 10 },
+    { id: 2, name: 'nguyen duc huy4', age: 10 },
+    { id: 3, name: 'nguyen duc huy2', age: 10 },
+    { id: 4, name: 'nguyen duc huy7', age: 10 },
+    { id: 5, name: 'nguyen duc huy3', age: 10 },
+    { id: 6, name: 'nguyen duc huy6', age: 10 },
+    { id: 7, name: 'nguyen duc huy8', age: 10 },
+    { id: 8, name: 'nguyen duc huy9', age: 10 },
+    { id: 9, name: 'nguyen duc huy5', age: 10 },
+    { id: 10, name: 'nguyen duc huy5', age: 10 },
+    { id: 11, name: 'nguyen duc huy5', age: 10 },
+    { id: 12, name: 'nguyen duc huy5', age: 10 },
+    { id: 13, name: 'nguyen duc huy5', age: 10 },
+    { id: 14, name: 'nguyen duc huy5', age: 10 },
+    { id: 15, name: 'nguyen duc huy5', age: 10 },
+  ]);
 
 
   return (
-    <View style={styles.container}>
-      <View>
-
-        <Text>
-          Name: {name}
-        </Text>
-        <TextInput
-          // multiline={true}
-          onChangeText={(value) => {
-            setName(value)
+    <View style={styles.container}  >
+      <Text style={{ color: 'red', fontWeight: 900 }}>NGUYỄN ĐỨC HUY</Text>
+      <View style={{ flex: 1 }}  >
+        <DataTable style={styles.tableHeader} >
+          <DataTable.Header >
+            <DataTable.Title>ID</DataTable.Title>
+            <DataTable.Title>Tên Sinh Viên</DataTable.Title>
+            <DataTable.Title>Tuổi</DataTable.Title>
+          </DataTable.Header>
+        </DataTable>
+        <FlatList
+          data={students}
+          keyExtractor={(item) => item.id.toString()}
+          // style={{ flex: 1 }}
+          renderItem={({ item }) => {
+            return (
+              <DataTable>
+                <DataTable.Row  >
+                  <DataTable.Cell>{item.id}</DataTable.Cell>
+                  <DataTable.Cell>{item.name}</DataTable.Cell>
+                  <DataTable.Cell>{item.age}</DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+            )
           }}
-
-          style={{
-            borderColor: 'green',
-            borderWidth: 1,
-            width: 200,
-            padding: 5,
-            borderRadius: 10,
-            fontWeight: 900
-          }} />
-      </View>
-
-      <View>
-
-        <Text>
-          Age: {age}
-        </Text>
-        <TextInput
-          // multiline={true}
-          onChangeText={(value) => {
-            setAge(+value)
-          }}
-          keyboardType="numeric"
-          // value={age}
-          style={{
-            borderColor: 'green',
-            borderWidth: 1,
-            width: 200,
-            padding: 5,
-            borderRadius: 10,
-            fontWeight: 900
-          }}
-          maxLength={2}
         />
-
-
       </View>
-
-      <Text style={styles.hello2}>NGUYỄN ĐỨC HUY</Text>
-      <Text style={styles.hello1} >Bạn mấy tuổi rồi: {count} chủi</Text>
-      <StatusBar style="auto" />
-      {/* <Button></Button> */}
-      <Button title='Bấm Vào Đây'
-        onPress={handleClick}
-      />
-      <Button title='Reset'
-        onPress={() => {
-          setCount(() => {
-            return 0
-          })
-        }}
-        color={'red'}
-      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 100,
+    paddingHorizontal: 10,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#fff'
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
-
-  hello2: {
-    color: 'pink',
-    fontSize: 15,
-    fontWeight: 900
+  //   container: {
+  //   padding: 15,
+  // },
+  tableHeader: {
+    backgroundColor: '#DCDCDC',
+    // flex: 1
   },
-
-  hello1: {
-    color: 'red', fontSize: 30, borderColor: "green", borderWidth: 4, padding: 12
-  }
 });
