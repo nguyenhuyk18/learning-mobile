@@ -11,11 +11,13 @@
   "dependencies": {
     "expo": "~54.0.34",
     "expo-status-bar": "~3.0.9",
+    "formik": "^2.4.9",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
     "react-native-paper": "^5.15.3",
-    "react-native-web": "^0.21.0"
+    "react-native-web": "^0.21.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",

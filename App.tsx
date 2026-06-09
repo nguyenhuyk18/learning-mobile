@@ -1,77 +1,137 @@
-import { StatusBar } from 'expo-status-bar';
+// import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
-import { DataTable } from 'react-native-paper';
-
+import { Alert, Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+// import { Formik } from 'formik';
 // import { Button } from 'react-native/types_generated/index';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+// import { TouchableWithoutFeedback } from 'react-native/types_generated/index';
 
 export default function App() {
 
-  const [students, setStudents] = useState([
-    { id: 1, name: 'nguyen duc huy1', age: 10 },
-    { id: 2, name: 'nguyen duc huy4', age: 10 },
-    { id: 3, name: 'nguyen duc huy2', age: 10 },
-    { id: 4, name: 'nguyen duc huy7', age: 10 },
-    { id: 5, name: 'nguyen duc huy3', age: 10 },
-    { id: 6, name: 'nguyen duc huy6', age: 10 },
-    { id: 7, name: 'nguyen duc huy8', age: 10 },
-    { id: 8, name: 'nguyen duc huy9', age: 10 },
-    { id: 9, name: 'nguyen duc huy5', age: 10 },
-    { id: 10, name: 'nguyen duc huy5', age: 10 },
-    { id: 11, name: 'nguyen duc huy5', age: 10 },
-    { id: 12, name: 'nguyen duc huy5', age: 10 },
-    { id: 13, name: 'nguyen duc huy5', age: 10 },
-    { id: 14, name: 'nguyen duc huy5', age: 10 },
-    { id: 15, name: 'nguyen duc huy5', age: 10 },
+  const [works, setWorks] = useState<{ ten: String, lop: number }[]>([]);
+
+  const handleAddWork = (work: { ten: String, lop: number }) => {
+    setWorks([...works, work])
+  }
+
+  const handleDeleteAll = () => {
+    setWorks([]);
+  }
+
+  const handleAlert = () => Alert.alert('Bạn có muốn', 'My Alert Msg', [
+    {
+      text: 'Hủy Giao Tác',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel',
+    },
+    { text: 'Xác Nhận', onPress: () => console.log('OK Pressed') },
   ]);
+
+  const formik = useFormik({
+    // Khởi động giá trị cho thẻ nhập liệu
+    initialValues: {
+      ten: '',
+      lop: ''
+    },
+    // Kiểm tra dữ liệu hợp lệ không
+    validationSchema: Yup.object({
+      ten: Yup.string().required('Vui lòng nhập tên của bạn !!'),
+      lop: Yup.number()
+        .typeError("Lớp phải là số !!")
+        .integer("Lớp phải là số nguyên !!")
+        .required("Vui lòng nhập lớp !!")
+    }),
+
+    onSubmit: async (values, { resetForm }) => {
+      // console.log(values)
+      const tmp: any = values
+      handleAddWork(tmp)
+      resetForm()
+    },
+  });
 
 
   return (
-    <View style={styles.container}  >
-      <Text style={{ color: 'red', fontWeight: 900 }}>NGUYỄN ĐỨC HUY</Text>
-      <View style={{ flex: 1 }}  >
-        <DataTable style={styles.tableHeader} >
-          <DataTable.Header >
-            <DataTable.Title>ID</DataTable.Title>
-            <DataTable.Title>Tên Sinh Viên</DataTable.Title>
-            <DataTable.Title>Tuổi</DataTable.Title>
-          </DataTable.Header>
-        </DataTable>
+    <TouchableWithoutFeedback onPress={() => console.log('sdsd')} >
+      <View style={styles.container}  >
+        <Text style={styles.header}>TODO-APP</Text>
+        <View>
+          <Text>Nhập Họ Và Tên</Text>
+          <TextInput style={styles.textInput}
+
+            value={formik.values.ten}
+
+            onChangeText={formik.handleChange("ten")}
+            onBlur={formik.handleBlur("ten")}
+
+          />
+          {formik.touched.ten && formik.errors.ten && (
+            <Text style={{ color: "red" }} >{formik.errors.ten}</Text>
+          )}
+          {/* </TextInput> */}
+
+          <Text>Nhập Lớp</Text>
+          <TextInput style={styles.textInput} value={formik.values.lop}
+
+            onChangeText={formik.handleChange("lop")}
+            onBlur={formik.handleBlur("lop")}
+          />
+          {formik.touched.lop && formik.errors.lop && (
+            <Text style={{ color: "red" }} >{formik.errors.lop}</Text>
+          )}
+          <Button title="Cảnh Báo" color="red" onPress={handleAlert} />
+          <Button title="Xác Nhận" color="green" onPress={formik.submitForm} />
+          <Button title="Xóa" color="blue" onPress={handleDeleteAll} />
+        </View>
+
         <FlatList
-          data={students}
-          keyExtractor={(item) => item.id.toString()}
-          // style={{ flex: 1 }}
+          style={{ marginTop: 20 }}
+          data={works}
+          // keyExtractor={(item) => item.}
           renderItem={({ item }) => {
             return (
-              <DataTable>
-                <DataTable.Row  >
-                  <DataTable.Cell>{item.id}</DataTable.Cell>
-                  <DataTable.Cell>{item.name}</DataTable.Cell>
-                  <DataTable.Cell>{item.age}</DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
+              <View style={styles.elementStyle}>
+                <TouchableOpacity >
+                  <Text> Họ và tên: {item.ten} </Text>
+                  <Text> Lớp: {item.lop} </Text>
+                </TouchableOpacity >
+              </View>
             )
           }}
         />
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: 'orange',
+    paddingHorizontal: 20,
+    fontSize: 60,
+    textAlign: 'center'
+  },
+
   container: {
-    paddingTop: 100,
+    paddingTop: 50,
     paddingHorizontal: 10,
     flex: 1,
     backgroundColor: '#fff'
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-  //   container: {
-  //   padding: 15,
-  // },
-  tableHeader: {
-    backgroundColor: '#DCDCDC',
-    // flex: 1
+
+  textInput: {
+    borderColor: 'green',
+    borderWidth: 2,
+    padding: 10
   },
+
+  elementStyle: {
+    marginBottom: 20,
+    borderColor: 'red',
+    borderStyle: 'dotted',
+    borderWidth: 2
+  }
 });
