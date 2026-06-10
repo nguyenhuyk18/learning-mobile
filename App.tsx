@@ -1,13 +1,16 @@
 // import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Alert, Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import { NavigationContainer } from '@react-navigation/native';
-import HomeScreen from './components/HomeScreen';
-import DetailScreen from './components/DetailScreen';
+
+
+import 'react-native-gesture-handler';
+import RouterNavigator from './routers/router.navigator';
+
 
 
 
@@ -17,7 +20,8 @@ export default function App() {
 
 
 
-  const Stack = createNativeStackNavigator()
+  // const Stack = createNativeStackNavigator<RootStackParamList>()
+  // const Drawer = createDrawerNavigator();
 
   const handleAddWork = (work: { ten: String, lop: number }) => {
     setWorks([...works, work])
@@ -113,15 +117,12 @@ export default function App() {
 
     // <FlexBox />
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
 
-          options={{ title: 'Trang Chủ', headerBackVisible: false }} name='home' component={HomeScreen} />
-        <Stack.Screen
-          options={{ title: 'Trang Chi Tiết', headerBackVisible: false }}
-          name='review-detail' component={DetailScreen} />
-      </Stack.Navigator>
+      <RouterNavigator />
+
     </NavigationContainer>
+
+
   );
 }
 
