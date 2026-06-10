@@ -1,4 +1,8 @@
 export type RootStackParamList = {
     home: undefined,
-    'review-detail': undefined
+    'review-detail': {
+        id: number,
+        title: string,
+        star: number
+    }
 }

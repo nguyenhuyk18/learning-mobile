@@ -14,6 +14,9 @@ import DetailScreen from './components/DetailScreen';
 export default function App() {
 
   const [works, setWorks] = useState<{ ten: String, lop: number }[]>([]);
+
+
+
   const Stack = createNativeStackNavigator()
 
   const handleAddWork = (work: { ten: String, lop: number }) => {
