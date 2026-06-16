@@ -10,6 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import 'react-native-gesture-handler';
 import RouterNavigator from './routers/router.navigator';
+import { StatusBar } from 'expo-status-bar';
 
 
 
@@ -116,12 +117,17 @@ export default function App() {
     // </TouchableWithoutFeedback>
 
     // <FlexBox />
-    <NavigationContainer>
+    <>
+      <StatusBar
+        style="dark"
+        backgroundColor="#ffffff"
+        translucent={false}
+      />
+      <NavigationContainer>
+        <RouterNavigator />
 
-      <RouterNavigator />
-
-    </NavigationContainer>
-
+      </NavigationContainer>
+    </>
 
   );
 }
